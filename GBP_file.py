@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Apr  9 16:10:48 2024
-
 @author: kimhyunji
 """
 
@@ -21,7 +19,7 @@ from scipy.stats import probplot
 from statsmodels.stats.diagnostic import acorr_ljungbox
 import matplotlib.dates as mdates
 
-data = pd.read_csv('/Users/kimhyunji/Desktop/Semester 2/Presenting Reports/USD_GBP Historical Data.csv')
+data = pd.read_csv(file_path)
 data
 
 data['Date'] = pd.to_datetime(data['Date'])
@@ -163,7 +161,7 @@ plt.show()
 
 data.head()
 
-data.to_csv('/Users/kimhyunji/Desktop/Semester 2/Presenting Reports/USD_GBP All Data.csv')
+data.to_csv(file_path)
 ##########
 #
 ##########

@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Apr  9 17:40:03 2024
-
 @author: kimhyunji
 """
 
@@ -21,7 +19,7 @@ from scipy.stats import probplot
 from statsmodels.stats.diagnostic import acorr_ljungbox
 import matplotlib.dates as mdates
 
-data = pd.read_csv('/Users/kimhyunji/Downloads/GBP_KRW Historical Data.csv', thousands=',')
+data = pd.read_csv(file_path, thousands=',')
 data
 
 data['Date'] = pd.to_datetime(data['Date'])
@@ -41,10 +39,10 @@ plt.figure(figsize=(10, 6))
 plt.plot(data['Date'], data['MACD'], label='MACD', color='red')
 plt.plot(data['Date'], data['Signal_Line'], label='Signal Line', color='blue')
 
-plt.gcf().autofmt_xdate()  # x축 레이블이 서로 겹치지 않도록 자동으로 포맷을 조정합니다.
+plt.gcf().autofmt_xdate()  
 plt.title('MACD and Signal Line')
-plt.xlabel('Date')  # x축에 'Date'라는 레이블을 붙입니다.
-plt.ylabel('Value')  # y축에 'Value'라는 레이블을 붙입니다.
+plt.xlabel('Date')  
+plt.ylabel('Value')  
 plt.legend()
 plt.show()
 
@@ -89,8 +87,8 @@ plt.show()
 ##########
 #SMA5, SMA20
 ##########
-window_length_5 = 5  # 이 값을 원하는 기간의 길이로 설정합니다.
-window_length_20 = 20  # 이 값을 원하는 기간의 길이로 설정합니다.
+window_length_5 = 5  
+window_length_20 = 20 
 data['SMA5'] = data['Price'].rolling(window=window_length_5).mean()
 data['SMA20'] = data['Price'].rolling(window=window_length_20).mean()
 print(data[['Date', 'Price', 'SMA5','SMA20']].head(25))
@@ -140,8 +138,8 @@ print(data[['Date', 'TP', 'SMA_TP', 'MD', 'CCI']].tail(25))
 
 plt.figure(figsize=(10, 6))
 plt.plot(data['Date'], data['CCI'], label='CCI', color='blue')
-plt.axhline(100, color='red', linestyle='--', linewidth=0.5)  # 과매수 기준선
-plt.axhline(-100, color='green', linestyle='--', linewidth=0.5)  # 과매도 기준선
+plt.axhline(100, color='red', linestyle='--', linewidth=0.5)  
+plt.axhline(-100, color='green', linestyle='--', linewidth=0.5)  
 plt.title('CCI over time')
 plt.xlabel('Date')
 plt.ylabel('CCI')
@@ -160,8 +158,8 @@ print(data[['Date', '%K']].tail(25))
 
 plt.figure(figsize=(10, 6))
 plt.plot(data['Date'], data['%K'], label='%K', color='blue')
-plt.axhline(80, color='red', linestyle='--', linewidth=0.5)  # 과매수 기준선
-plt.axhline(20, color='green', linestyle='--', linewidth=0.5)  # 과매도 기준선
+plt.axhline(80, color='red', linestyle='--', linewidth=0.5) 
+plt.axhline(20, color='green', linestyle='--', linewidth=0.5) 
 plt.title('Stochastic %K over time')
 plt.xlabel('Date')
 plt.ylabel('%K')

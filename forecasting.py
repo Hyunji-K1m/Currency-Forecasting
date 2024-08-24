@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 10 01:01:28 2024
-
 @author: kimhyunji
 """
 
@@ -33,7 +31,7 @@ def month_to_date (date_string):
     year, month, day = date_string.split('-')
     return pd.Timestamp(year=int(year), month=int(month), day=int(day))
 
-data_path='/Users/kimhyunji/Desktop/Semester 2/Presenting Reports/USD_GBP-All-Data.xlsx'
+data_path='file_path'
 data = pd.read_excel(data_path)
 data = data.iloc[19:].set_index(data.columns[0])
 data.index = data.index.astype(str)  
@@ -59,23 +57,17 @@ param_grid = {
     'gamma': ['scale', 'auto', 0.01, 0.1, 1, 10]
 }
 
-# GridSearchCV 초기화
 grid_search = GridSearchCV(SVR(kernel='rbf'), param_grid, cv=5, scoring='neg_mean_squared_error', verbose=2)
 grid_search.fit(train_x, train_y)
-
-
-# 최적의 파라미터 출력
 best_params = grid_search.best_params_
 print("Best parameters:", best_params)
 
-# 최적의 파라미터로 SVR 모델 훈련
 svr_best = SVR(kernel='rbf', C=best_params['C'], epsilon=best_params['epsilon'], gamma=best_params['gamma'])
 svr_best.fit(train_x, train_y)
 
-# 테스트 데이터에 대한 예측 수행
+
 predictions = svr_best.predict(test_x)
 
-# 예측 성능 평가
 print(f"MSE: {MSE(test_y, predictions)}")
 print(f"MAE: {MAE(test_y, predictions)}")
 
@@ -83,21 +75,18 @@ test_predictions = svr_best.predict(test_x)
 print(f"Test MSE: {MSE(test_y, test_predictions)}")
 print(f"Test MAE: {MAE(test_y, test_predictions)}")
 
-# SVR 모델로부터 잔차 계산
+
 residuals = test_y - predictions
 
-# GARCH(1,1) 모델 적합
 garch_model = arch_model(residuals, p=1, q=1)
 garch_result = garch_model.fit(update_freq=5)
 
-# 결과 출력
 print(garch_result.summary())
 
-# RMSE 계산
+
 rmse = np.sqrt(MSE(test_y, predictions))
 print(f"Test RMSE: {rmse}")
 
-# GARCH(1,1) 모델에서 alpha와 beta의 p-value 추출
 p_values = garch_result.pvalues
 print(f"Alpha p-value: {p_values['alpha[1]']}")
 print(f"Beta p-value: {p_values['beta[1]']}")
@@ -171,12 +160,6 @@ optimal_svr.fit(df.drop(['TP'], axis=1), df['TP'])
 
 
 predictions = optimal_svr.predict(df.drop(['TP'], axis=1))
-
-# 잔차 계산
-residuals = df['TP'] - predictions
-
-# GARCH 모델 적용 (예: ARCH 패키지 사용)
-from arch import arch_model
 
 garch_model = arch_model(residuals, p=1, q=1)
 garch_fit = garch_model.fit(update_freq=5)
